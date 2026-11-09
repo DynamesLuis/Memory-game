@@ -1,4 +1,28 @@
+import { useEffect, useState } from "react";
+import { getData } from "../services/digimonService";
+import Loading from "../components/game/Loading";
+import DigimonCard from "../components/game/DigimonCard";
+
 export default function GamePage({ onReturnHome, selectedDifficulty }) {
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [characterPool, setCharacterPool] = useState(null);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const data = await getData();
+        setCharacterPool(data);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchData();
+  }, []);
+
   return (
     <main className="min-h-screen flex flex-col justify-between text-white p-2">
       <header className="flex justify-around p-4 bg-sky-700 border-2 border-solid border-sky-500 rounded-lg">
@@ -11,12 +35,14 @@ export default function GamePage({ onReturnHome, selectedDifficulty }) {
           <span className="text-2xl font-bold">0</span>
         </p>
         <p className="flex flex-col items-center">
-          <span className="text-sm font-medium">Selections to win</span>
+          <span className="text-sm font-medium">Characters left</span>
           <span className="text-2xl font-bold">0/120</span>
         </p>
       </header>
 
-      <div className="flex-1 flex items-center justify-center"></div>
+      <div className="flex-1 flex items-center justify-center">
+        {isLoading ? <Loading /> : null}
+      </div>
 
       <footer className="flex justify-between p-4">
         <button
