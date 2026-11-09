@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { getData } from "../services/digimonService";
+import Loading from "../components/game/Loading";
+import DigimonCard from "../components/game/DigimonCard";
 
 export default function GamePage({ onReturnHome, selectedDifficulty }) {
   const [isLoading, setIsLoading] = useState(true);
@@ -38,7 +40,9 @@ export default function GamePage({ onReturnHome, selectedDifficulty }) {
         </p>
       </header>
 
-      <div className="flex-1 flex items-center justify-center"></div>
+      <div className="flex-1 flex items-center justify-center">
+        {isLoading ? <Loading /> : null}
+      </div>
 
       <footer className="flex justify-between p-4">
         <button
