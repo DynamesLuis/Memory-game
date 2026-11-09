@@ -1,13 +1,17 @@
 import { imgAssets } from "../assets";
 import DifficultyButton from "../components/ui/DifficultyButton";
+import { difficulties } from "../constants/gameConfig";
 
-const difficulty = ["Easy", "Medium", "Difficulty"];
-
-export default function HomePage({ highScore = 0 }) {
+export default function HomePage({
+  highScore = 0,
+  onStartGame,
+  onSelectDifficulty,
+  selectedDifficulty,
+}) {
   return (
     <main className="min-h-screen grid grid-cols-2">
       <div className="flex flex-col items-center justify-center pr-4 translate-x-25">
-        <img src={imgAssets.logo} alt="Game logo" className="w-110"/>
+        <img src={imgAssets.logo} alt="Game logo" className="w-110" />
         <div className="relative w-80 h-72 mx-auto">
           <img
             src={imgAssets.gabumon}
@@ -56,7 +60,10 @@ export default function HomePage({ highScore = 0 }) {
             {highScore === 0 ? "No record yet!" : "Personal best"}
           </span>
         </div>
-        <button className="relative grid grid-cols-1 items-center justify-items-center w-52 h-15 rounded-full border-2 border-amber-500 bg-amber-300 text-[30px] font-bold text-sky-800 shadow-[0_5px_0_#b45309] cursor-pointer hover:bg-amber-200 hover:border-amber-400 hover:shadow-[0_7px_0_#b45309] hover:-translate-y-1 active:translate-y-1 active:shadow-none transition-all duration-150">
+        <button
+          onClick={onStartGame}
+          className="relative grid grid-cols-1 items-center justify-items-center w-52 h-15 rounded-full border-2 border-amber-500 bg-amber-300 text-[30px] font-bold text-sky-800 shadow-[0_5px_0_#b45309] cursor-pointer hover:bg-amber-200 hover:border-amber-400 hover:shadow-[0_7px_0_#b45309] hover:-translate-y-1 active:translate-y-1 active:shadow-none transition-all duration-150"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -70,8 +77,15 @@ export default function HomePage({ highScore = 0 }) {
 
           <span className="col-start-1 row-start-1 tracking-wider">PLAY</span>
         </button>
-        {difficulty.map((difficulty, index) => {
-          return <DifficultyButton label={difficulty} key={index} />;
+        {difficulties.map((difficulty) => {
+          return (
+            <DifficultyButton
+              key={difficulty.id}
+              difficulty={difficulty}
+              onSelectDifficulty={onSelectDifficulty}
+              selectedDifficulty={selectedDifficulty}
+            />
+          );
         })}
       </div>
     </main>
