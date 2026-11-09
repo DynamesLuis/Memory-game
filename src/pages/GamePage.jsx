@@ -1,4 +1,4 @@
-export default function GamePage({ onReturnHome }) {
+export default function GamePage({ onReturnHome, selectedDifficulty }) {
   return (
     <main className="min-h-screen flex flex-col justify-between text-white p-2">
       <header className="flex justify-around p-4 bg-sky-700 border-2 border-solid border-sky-500 rounded-lg">

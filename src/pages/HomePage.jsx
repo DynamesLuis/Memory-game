@@ -1,9 +1,13 @@
 import { imgAssets } from "../assets";
 import DifficultyButton from "../components/ui/DifficultyButton";
+import { difficulties } from "../constants/gameConfig";
 
-const difficulty = ["Easy", "Medium", "Difficulty"];
-
-export default function HomePage({ highScore = 0, onStartGame }) {
+export default function HomePage({
+  highScore = 0,
+  onStartGame,
+  onSelectDifficulty,
+  selectedDifficulty,
+}) {
   return (
     <main className="min-h-screen grid grid-cols-2">
       <div className="flex flex-col items-center justify-center pr-4 translate-x-25">
@@ -73,8 +77,15 @@ export default function HomePage({ highScore = 0, onStartGame }) {
 
           <span className="col-start-1 row-start-1 tracking-wider">PLAY</span>
         </button>
-        {difficulty.map((difficulty, index) => {
-          return <DifficultyButton label={difficulty} key={index} />;
+        {difficulties.map((difficulty) => {
+          return (
+            <DifficultyButton
+              key={difficulty.id}
+              difficulty={difficulty}
+              onSelectDifficulty={onSelectDifficulty}
+              selectedDifficulty={selectedDifficulty}
+            />
+          );
         })}
       </div>
     </main>

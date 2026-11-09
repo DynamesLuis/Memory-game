@@ -1,8 +1,13 @@
-export default function DifficultyButton({ label, difficulty }) {
-  const selected = difficulty === label;
+export default function DifficultyButton({
+  selectedDifficulty,
+  difficulty,
+  onSelectDifficulty,
+}) {
+  const selected = selectedDifficulty?.id === difficulty.id;
 
   return (
     <button
+      onClick={() => onSelectDifficulty(difficulty)}
       className={`
         w-52 h-12
         rounded-full
@@ -22,7 +27,7 @@ export default function DifficultyButton({ label, difficulty }) {
         active:shadow-none
       `}
     >
-      {label}
+      {difficulty.label}
     </button>
   );
 }
