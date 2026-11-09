@@ -1,4 +1,4 @@
-export default function GamePage() {
+export default function GamePage({ onReturnHome }) {
   return (
     <main className="min-h-screen flex flex-col justify-between text-white p-2">
       <header className="flex justify-around p-4 bg-sky-700 border-2 border-solid border-sky-500 rounded-lg">
@@ -16,12 +16,13 @@ export default function GamePage() {
         </p>
       </header>
 
-      <div className="flex-1 flex items-center justify-center">
-        
-      </div>
+      <div className="flex-1 flex items-center justify-center"></div>
 
       <footer className="flex justify-between p-4">
-        <button className="cursor-pointer border-2 border-solid border-sky-500 bg-sky-700 p-2 rounded-full w-35 h-15 flex items-center justify-center gap-2 hover:scale-105 hover:-translate-y-1 hover:shadow-lg hover:shadow-sky-500/30">
+        <button
+          onClick={onReturnHome}
+          className="cursor-pointer border-2 border-solid border-sky-500 bg-sky-700 p-2 rounded-full w-35 h-15 flex items-center justify-center gap-2 hover:scale-105 hover:-translate-y-1 hover:shadow-lg hover:shadow-sky-500/30"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
