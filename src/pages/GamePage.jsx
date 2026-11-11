@@ -10,6 +10,7 @@ export default function GamePage({ onReturnHome, selectedDifficulty }) {
   const [characterPool, setCharacterPool] = useState(null);
   const [selectedCharacters, setSelectedCharacters] = useState([]);
   const [charactersShown, setCharactersShown] = useState([]);
+  const [gameStatus, setGameStatus] = useState("playing");
 
   useEffect(() => {
     async function fetchData() {
@@ -32,6 +33,29 @@ export default function GamePage({ onReturnHome, selectedDifficulty }) {
 
     fetchData();
   }, []);
+
+  const handleClickedCard = (clickedCard) => {
+    if (gameStatus !== "playing") return;
+
+    if (selectedCharacters.includes(clickedCard)) {
+      setGameStatus("lost");
+    } else {
+      const updatedSelectedCharacters = [...selectedCharacters, clickedCard];
+      setSelectedCharacters(updatedSelectedCharacters);
+
+      if (updatedSelectedCharacters.length === characterPool.length) {
+        setGameStatus("won");
+        return;
+      }
+      setCharactersShown(
+        getCardsToShow(
+          characterPool,
+          updatedSelectedCharacters,
+          selectedDifficulty.cardsShown,
+        ),
+      );
+    }
+  };
 
   return (
     <main className="min-h-screen flex flex-col justify-between text-white p-2">
@@ -57,8 +81,8 @@ export default function GamePage({ onReturnHome, selectedDifficulty }) {
           charactersShown.map((digimon) => {
             return (
               <DigimonCard
-                image={digimon.image}
-                name={digimon.name}
+                digimon={digimon}
+                onSelect={handleClickedCard}
                 key={digimon.id}
               />
             );
