@@ -3,6 +3,7 @@ import { getData } from "../services/digimonService";
 import Loading from "../components/game/Loading";
 import DigimonCard from "../components/game/DigimonCard";
 import { getCardsToShow } from "../utils/gameUtils";
+import GameResultModal from "../components/game/GameResultModal";
 
 export default function GamePage({ onReturnHome, selectedDifficulty }) {
   const [isLoading, setIsLoading] = useState(true);
@@ -66,11 +67,15 @@ export default function GamePage({ onReturnHome, selectedDifficulty }) {
         </p>
         <p className="flex flex-col items-center">
           <span className="text-sm font-medium">Your Score</span>
-          <span className="text-2xl font-bold">0</span>
+          <span className="text-2xl font-bold">
+            {selectedCharacters.length}
+          </span>
         </p>
         <p className="flex flex-col items-center">
           <span className="text-sm font-medium">Characters left</span>
-          <span className="text-2xl font-bold">0/120</span>
+          <span className="text-2xl font-bold">
+            {selectedCharacters.length}/120
+          </span>
         </p>
       </header>
 
@@ -128,6 +133,12 @@ export default function GamePage({ onReturnHome, selectedDifficulty }) {
           Restart
         </button>
       </footer>
+      {gameStatus !== "playing" && (
+        <GameResultModal
+          gameStatus={gameStatus}
+          score={selectedCharacters.length}
+        />
+      )}
     </main>
   );
 }
