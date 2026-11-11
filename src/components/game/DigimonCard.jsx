@@ -1,6 +1,7 @@
-export default function DigimonCard({ image, name }) {
+export default function DigimonCard({ digimon, onSelect }) {
   return (
     <div
+      onClick={() => onSelect(digimon.id)}
       className="
       w-44
       p-2
@@ -18,8 +19,8 @@ export default function DigimonCard({ image, name }) {
       <div className="flex flex-col gap-2">
         <div className="bg-sky-900 rounded-md p-1">
           <img
-            src={image}
-            alt={name}
+            src={digimon.image}
+            alt={digimon.name}
             className="w-full aspect-square object-contain"
           />
         </div>
@@ -33,7 +34,7 @@ export default function DigimonCard({ image, name }) {
           text-center
         "
         >
-          <p className="text-white font-bold">{name}</p>
+          <p className="text-white font-bold">{digimon.name}</p>
         </div>
       </div>
     </div>

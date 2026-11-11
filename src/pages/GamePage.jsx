@@ -2,17 +2,29 @@ import { useEffect, useState } from "react";
 import { getData } from "../services/digimonService";
 import Loading from "../components/game/Loading";
 import DigimonCard from "../components/game/DigimonCard";
+import { getCardsToShow } from "../utils/gameUtils";
+import GameResultModal from "../components/game/GameResultModal";
 
 export default function GamePage({ onReturnHome, selectedDifficulty }) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [characterPool, setCharacterPool] = useState(null);
+  const [selectedCharacters, setSelectedCharacters] = useState([]);
+  const [charactersShown, setCharactersShown] = useState([]);
+  const [gameStatus, setGameStatus] = useState("playing");
 
   useEffect(() => {
     async function fetchData() {
       try {
         const data = await getData();
         setCharacterPool(data);
+        setCharactersShown(
+          getCardsToShow(
+            data,
+            selectedCharacters,
+            selectedDifficulty.cardsShown,
+          ),
+        );
       } catch (error) {
         setError(error.message);
       } finally {
@@ -23,6 +35,29 @@ export default function GamePage({ onReturnHome, selectedDifficulty }) {
     fetchData();
   }, []);
 
+  const handleClickedCard = (clickedCard) => {
+    if (gameStatus !== "playing") return;
+
+    if (selectedCharacters.includes(clickedCard)) {
+      setGameStatus("lost");
+    } else {
+      const updatedSelectedCharacters = [...selectedCharacters, clickedCard];
+      setSelectedCharacters(updatedSelectedCharacters);
+
+      if (updatedSelectedCharacters.length === characterPool.length) {
+        setGameStatus("won");
+        return;
+      }
+      setCharactersShown(
+        getCardsToShow(
+          characterPool,
+          updatedSelectedCharacters,
+          selectedDifficulty.cardsShown,
+        ),
+      );
+    }
+  };
+
   return (
     <main className="min-h-screen flex flex-col justify-between text-white p-2">
       <header className="flex justify-around p-4 bg-sky-700 border-2 border-solid border-sky-500 rounded-lg">
@@ -32,16 +67,32 @@ export default function GamePage({ onReturnHome, selectedDifficulty }) {
         </p>
         <p className="flex flex-col items-center">
           <span className="text-sm font-medium">Your Score</span>
-          <span className="text-2xl font-bold">0</span>
+          <span className="text-2xl font-bold">
+            {selectedCharacters.length}
+          </span>
         </p>
         <p className="flex flex-col items-center">
           <span className="text-sm font-medium">Characters left</span>
-          <span className="text-2xl font-bold">0/120</span>
+          <span className="text-2xl font-bold">
+            {selectedCharacters.length}/120
+          </span>
         </p>
       </header>
 
       <div className="flex-1 flex items-center justify-center">
-        {isLoading ? <Loading /> : null}
+        {isLoading ? (
+          <Loading />
+        ) : (
+          charactersShown.map((digimon) => {
+            return (
+              <DigimonCard
+                digimon={digimon}
+                onSelect={handleClickedCard}
+                key={digimon.id}
+              />
+            );
+          })
+        )}
       </div>
 
       <footer className="flex justify-between p-4">
@@ -82,6 +133,12 @@ export default function GamePage({ onReturnHome, selectedDifficulty }) {
           Restart
         </button>
       </footer>
+      {gameStatus !== "playing" && (
+        <GameResultModal
+          gameStatus={gameStatus}
+          score={selectedCharacters.length}
+        />
+      )}
     </main>
   );
 }
