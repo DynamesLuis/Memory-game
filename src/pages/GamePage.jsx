@@ -2,17 +2,27 @@ import { useEffect, useState } from "react";
 import { getData } from "../services/digimonService";
 import Loading from "../components/game/Loading";
 import DigimonCard from "../components/game/DigimonCard";
+import { getCardsToShow } from "../utils/gameUtils";
 
 export default function GamePage({ onReturnHome, selectedDifficulty }) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [characterPool, setCharacterPool] = useState(null);
+  const [selectedCharacters, setSelectedCharacters] = useState([]);
+  const [charactersShown, setCharactersShown] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
       try {
         const data = await getData();
         setCharacterPool(data);
+        setCharactersShown(
+          getCardsToShow(
+            data,
+            selectedCharacters,
+            selectedDifficulty.cardsShown,
+          ),
+        );
       } catch (error) {
         setError(error.message);
       } finally {
@@ -41,7 +51,19 @@ export default function GamePage({ onReturnHome, selectedDifficulty }) {
       </header>
 
       <div className="flex-1 flex items-center justify-center">
-        {isLoading ? <Loading /> : null}
+        {isLoading ? (
+          <Loading />
+        ) : (
+          charactersShown.map((digimon) => {
+            return (
+              <DigimonCard
+                image={digimon.image}
+                name={digimon.name}
+                key={digimon.id}
+              />
+            );
+          })
+        )}
       </div>
 
       <footer className="flex justify-between p-4">
