@@ -58,6 +58,14 @@ export default function GamePage({ onReturnHome, selectedDifficulty }) {
     }
   };
 
+  const handleRestartClick = () => {
+    setSelectedCharacters([]);
+    setGameStatus("playing");
+    setCharactersShown(
+      getCardsToShow(characterPool, [], selectedDifficulty.cardsShown),
+    );
+  };
+
   return (
     <main className="min-h-screen flex flex-col justify-between text-white p-2">
       <header className="flex justify-around p-4 bg-sky-700 border-2 border-solid border-sky-500 rounded-lg">
@@ -113,7 +121,10 @@ export default function GamePage({ onReturnHome, selectedDifficulty }) {
           </svg>
           Menu
         </button>
-        <button className="cursor-pointer border-2 border-solid border-sky-500 bg-sky-700 rounded-full w-35 h-15 flex items-center justify-center gap-2 hover:scale-105 hover:-translate-y-1 hover:shadow-lg hover:shadow-sky-500/30">
+        <button
+          onClick={handleRestartClick}
+          className="cursor-pointer border-2 border-solid border-sky-500 bg-sky-700 rounded-full w-35 h-15 flex items-center justify-center gap-2 hover:scale-105 hover:-translate-y-1 hover:shadow-lg hover:shadow-sky-500/30"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -137,6 +148,7 @@ export default function GamePage({ onReturnHome, selectedDifficulty }) {
         <GameResultModal
           gameStatus={gameStatus}
           score={selectedCharacters.length}
+          onRestart={handleRestartClick}
         />
       )}
     </main>

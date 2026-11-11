@@ -1,6 +1,6 @@
 import { imgAssets } from "../../assets";
 
-export default function GameResultModal({ gameStatus, score }) {
+export default function GameResultModal({ gameStatus, score, onRestart }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-[#020817]/80 p-4 backdrop-blur-sm">
       {/* Modal */}
@@ -85,7 +85,10 @@ export default function GameResultModal({ gameStatus, score }) {
 
           {/* Buttons */}
           <div className="mt-7 flex flex-col gap-3 sm:mt-8 sm:flex-row">
-            <button className="flex-1 rounded-xl border-b-4 border-orange-600 bg-gradient-to-b from-yellow-300 to-orange-400 px-5 py-3.5 text-sm font-black uppercase tracking-widest text-orange-950 shadow-lg shadow-orange-500/20 transition-all hover:-translate-y-1 hover:brightness-110 active:translate-y-0 active:border-b-0">
+            <button
+              onClick={onRestart}
+              className="flex-1 rounded-xl border-b-4 border-orange-600 bg-gradient-to-b from-yellow-300 to-orange-400 px-5 py-3.5 text-sm font-black uppercase tracking-widest text-orange-950 shadow-lg shadow-orange-500/20 transition-all hover:-translate-y-1 hover:brightness-110 active:translate-y-0 active:border-b-0"
+            >
               ▶ Play Again
             </button>
 
