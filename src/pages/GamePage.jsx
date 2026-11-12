@@ -154,6 +154,7 @@ export default function GamePage({
           gameStatus={gameStatus}
           score={selectedCharacters.length}
           onRestart={handleRestartClick}
+          onReturnHome={onReturnHome}
         />
       )}
     </main>
