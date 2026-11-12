@@ -2,7 +2,7 @@ import HomePage from "./pages/HomePage";
 import "./index.css";
 import { imgAssets } from "./assets";
 import GamePage from "./pages/GamePage";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
   const [pageDisplayed, setPageDisplayed] = useState("Home");
@@ -32,6 +32,10 @@ function App() {
       [id]: Math.max(prev[id], newScore),
     }));
   };
+
+  useEffect(() => {
+    localStorage.setItem("highScores", JSON.stringify(highScores));
+  }, [highScores]);
 
   return (
     <div
