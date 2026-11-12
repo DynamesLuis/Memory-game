@@ -7,6 +7,11 @@ import { useState } from "react";
 function App() {
   const [pageDisplayed, setPageDisplayed] = useState("Home");
   const [selectedDifficulty, setSelectedDifficulty] = useState(null);
+  const [highScores, setHighScores] = useState({
+    1: null,
+    2: null,
+    3: null,
+  });
 
   const handleStartClick = () => {
     if (!selectedDifficulty) return;
@@ -31,6 +36,7 @@ function App() {
           onStartGame={handleStartClick}
           selectedDifficulty={selectedDifficulty}
           onSelectDifficulty={handleSelectDifficulty}
+          highScores={highScores}
         />
       ) : (
         <GamePage
