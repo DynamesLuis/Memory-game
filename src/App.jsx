@@ -2,15 +2,27 @@ import HomePage from "./pages/HomePage";
 import "./index.css";
 import { imgAssets } from "./assets";
 import GamePage from "./pages/GamePage";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { isValidHighScores } from "./utils/validateJson";
 
 function App() {
   const [pageDisplayed, setPageDisplayed] = useState("Home");
   const [selectedDifficulty, setSelectedDifficulty] = useState(null);
-  const [highScores, setHighScores] = useState({
-    1: 0,
-    2: 0,
-    3: 0,
+  const [highScores, setHighScores] = useState(() => {
+    const defaultHighScores = {
+      1: 0,
+      2: 0,
+      3: 0,
+    };
+    try {
+      const savedData = localStorage.getItem("highScores");
+      if (!savedData) return defaultHighScores;
+      const parsedData = JSON.parse(savedData);
+      return isValidHighScores(parsedData) ? parsedData : defaultHighScores;
+    } catch (error) {
+      console.log(error);
+      return defaultHighScores;
+    }
   });
 
   const handleStartClick = () => {
@@ -32,6 +44,10 @@ function App() {
       [id]: Math.max(prev[id], newScore),
     }));
   };
+
+  useEffect(() => {
+    localStorage.setItem("highScores", JSON.stringify(highScores));
+  }, [highScores]);
 
   return (
     <div
