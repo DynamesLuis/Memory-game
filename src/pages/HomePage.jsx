@@ -3,7 +3,7 @@ import DifficultyButton from "../components/ui/DifficultyButton";
 import { difficulties } from "../constants/gameConfig";
 
 export default function HomePage({
-  highScore = 0,
+  highScores,
   onStartGame,
   onSelectDifficulty,
   selectedDifficulty,
@@ -31,7 +31,8 @@ export default function HomePage({
         </div>
       </div>
       <div className="h-full flex flex-col items-center justify-center gap-5 pl-4 -translate-x-30">
-        <div className="flex flex-col items-center gap-1 min-w-36 rounded-xl border-2 border-sky-500 bg-slate-950/80 p-3 shadow-lg shadow-sky-500/20">
+        <div className="flex flex-col items-center gap-3 rounded-xl border-2 border-sky-500 bg-slate-950/80 p-3 shadow-lg shadow-sky-500/20">
+          {/* Header */}
           <div className="flex items-center gap-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -48,18 +49,37 @@ export default function HomePage({
             </svg>
 
             <span className="text-sm font-bold tracking-wider text-sky-300">
-              HIGH SCORE
+              HIGH SCORES
             </span>
           </div>
 
-          <span className="text-2xl font-extrabold text-white">
-            {highScore === 0 ? "--" : highScore}
-          </span>
+          {/* Scores */}
+          <div className="grid w-full grid-cols-3 gap-2">
+            {difficulties.map((difficulty) => (
+              <div
+                key={difficulty.id}
+                className="flex flex-col items-center gap-1 rounded-lg bg-sky-950/60 p-2"
+              >
+                <span className="text-xs font-bold uppercase text-sky-300">
+                  {difficulty.label}
+                </span>
 
-          <span className="text-xs text-sky-400">
-            {highScore === 0 ? "No record yet!" : "Personal best"}
-          </span>
+                <span className="text-xl font-extrabold text-white">
+                  {highScores[difficulty.id] === 0
+                    ? "--"
+                    : highScores[difficulty.id]}
+                </span>
+
+                <span className="text-[10px] text-sky-400">
+                  {highScores[difficulty.id] === 0
+                    ? "No record"
+                    : "Personal best"}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
+
         <button
           onClick={onStartGame}
           className="relative grid grid-cols-1 items-center justify-items-center w-52 h-15 rounded-full border-2 border-amber-500 bg-amber-300 text-[30px] font-bold text-sky-800 shadow-[0_5px_0_#b45309] cursor-pointer hover:bg-amber-200 hover:border-amber-400 hover:shadow-[0_7px_0_#b45309] hover:-translate-y-1 active:translate-y-1 active:shadow-none transition-all duration-150"

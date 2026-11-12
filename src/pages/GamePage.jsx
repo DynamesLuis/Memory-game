@@ -5,7 +5,11 @@ import DigimonCard from "../components/game/DigimonCard";
 import { getCardsToShow } from "../utils/gameUtils";
 import GameResultModal from "../components/game/GameResultModal";
 
-export default function GamePage({ onReturnHome, selectedDifficulty }) {
+export default function GamePage({
+  onReturnHome,
+  selectedDifficulty,
+  onSetHighScore,
+}) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [characterPool, setCharacterPool] = useState(null);
@@ -43,6 +47,7 @@ export default function GamePage({ onReturnHome, selectedDifficulty }) {
     } else {
       const updatedSelectedCharacters = [...selectedCharacters, clickedCard];
       setSelectedCharacters(updatedSelectedCharacters);
+      onSetHighScore(selectedDifficulty.id, updatedSelectedCharacters.length);
 
       if (updatedSelectedCharacters.length === characterPool.length) {
         setGameStatus("won");

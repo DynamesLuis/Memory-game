@@ -7,6 +7,11 @@ import { useState } from "react";
 function App() {
   const [pageDisplayed, setPageDisplayed] = useState("Home");
   const [selectedDifficulty, setSelectedDifficulty] = useState(null);
+  const [highScores, setHighScores] = useState({
+    1: 0,
+    2: 0,
+    3: 0,
+  });
 
   const handleStartClick = () => {
     if (!selectedDifficulty) return;
@@ -21,6 +26,13 @@ function App() {
     setSelectedDifficulty(difficulty);
   };
 
+  const handleSetHighScore = (id, newScore) => {
+    setHighScores((prev) => ({
+      ...prev,
+      [id]: Math.max(prev[id], newScore),
+    }));
+  };
+
   return (
     <div
       className={`min-h-screen bg-cover bg-center bg-no-repeat`}
@@ -31,11 +43,13 @@ function App() {
           onStartGame={handleStartClick}
           selectedDifficulty={selectedDifficulty}
           onSelectDifficulty={handleSelectDifficulty}
+          highScores={highScores}
         />
       ) : (
         <GamePage
           onReturnHome={handleReturnHome}
           selectedDifficulty={selectedDifficulty}
+          onSetHighScore={handleSetHighScore}
         />
       )}
     </div>
