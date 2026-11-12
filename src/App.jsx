@@ -8,9 +8,9 @@ function App() {
   const [pageDisplayed, setPageDisplayed] = useState("Home");
   const [selectedDifficulty, setSelectedDifficulty] = useState(null);
   const [highScores, setHighScores] = useState({
-    1: null,
-    2: null,
-    3: null,
+    1: 0,
+    2: 0,
+    3: 0,
   });
 
   const handleStartClick = () => {
@@ -24,6 +24,13 @@ function App() {
 
   const handleSelectDifficulty = (difficulty) => {
     setSelectedDifficulty(difficulty);
+  };
+
+  const handleSetHighScore = (id, newScore) => {
+    setHighScores((prev) => ({
+      ...prev,
+      [id]: Math.max(prev[id], newScore),
+    }));
   };
 
   return (
@@ -42,6 +49,7 @@ function App() {
         <GamePage
           onReturnHome={handleReturnHome}
           selectedDifficulty={selectedDifficulty}
+          onSetHighScore={handleSetHighScore}
         />
       )}
     </div>

@@ -65,13 +65,13 @@ export default function HomePage({
                 </span>
 
                 <span className="text-xl font-extrabold text-white">
-                  {highScores[difficulty.id] === null
+                  {highScores[difficulty.id] === 0
                     ? "--"
                     : highScores[difficulty.id]}
                 </span>
 
                 <span className="text-[10px] text-sky-400">
-                  {highScores[difficulty.id] === null
+                  {highScores[difficulty.id] === 0
                     ? "No record"
                     : "Personal best"}
                 </span>
