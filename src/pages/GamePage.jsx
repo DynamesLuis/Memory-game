@@ -16,6 +16,7 @@ export default function GamePage({
   const [selectedCharacters, setSelectedCharacters] = useState([]);
   const [charactersShown, setCharactersShown] = useState([]);
   const [gameStatus, setGameStatus] = useState("playing");
+  const [isFlipped, setIsFlipped] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -101,6 +102,7 @@ export default function GamePage({
               <DigimonCard
                 digimon={digimon}
                 onSelect={handleClickedCard}
+                isFlipped={isFlipped}
                 key={digimon.id}
               />
             );
