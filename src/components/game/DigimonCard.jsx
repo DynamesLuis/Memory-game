@@ -22,7 +22,7 @@ export default function DigimonCard({
             />
           </div>
 
-          <div className="bg-sky-700 border border-sky-400 rounded-md p-2 text-center">
+          <div className="h-14 flex items-center justify-center bg-sky-700 border border-sky-400 rounded-md p-2 text-center">
             <p className="text-white font-bold">{digimon.name}</p>
           </div>
         </div>

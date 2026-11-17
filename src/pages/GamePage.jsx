@@ -118,7 +118,7 @@ export default function GamePage({
         </p>
       </header>
 
-      <div className={`flex-1 flex items-center justify-center ${isAnimating ? "pointer-events-none" : null}`}>
+      <div className={`flex-1 flex items-center justify-center gap-5 flex-wrap mt-2 ${isAnimating ? "pointer-events-none" : null}`}>
         {isLoading ? (
           <Loading />
         ) : (
