@@ -1,10 +1,16 @@
-export default function DigimonCard({ digimon, onSelect, isFlipped}) {
+export default function DigimonCard({
+  digimon,
+  onSelect,
+  isFlipped,
+  onFlipped,
+}) {
   return (
     <div
       onClick={() => onSelect(digimon.id)}
       className="w-44 p-2 bg-sky-950 border-2 border-sky-500 rounded-xl shadow-lg shadow-sky-500/20 transition-all duration-200 hover:scale-105 hover:border-sky-300 hover:shadow-sky-400/40 cursor-pointer perspective-midrange"
     >
       <div
+        onTransitionEnd={onFlipped}
         className={`inner grid transform-3d relative transition-transform duration-800 ${isFlipped ? "rotate-y-180" : "rotate-y-0"}`}
       >
         <div className="front col-start-1 row-start-1 flex flex-col gap-2 backface-hidden">
@@ -21,13 +27,7 @@ export default function DigimonCard({ digimon, onSelect, isFlipped}) {
           </div>
         </div>
 
-        <div
-          className="back col-start-1 row-start-1 backface-hidden rotate-y-180
-  flex items-center justify-center overflow-hidden
-  rounded-xl border-2 border-cyan-400
-  bg-gradient-to-br from-blue-950 via-slate-900 to-cyan-950
-  shadow-lg shadow-cyan-500/20"
-        >
+        <div className="back col-start-1 row-start-1 backface-hidden rotate-y-180 flex items-center justify-center overflow-hidden rounded-xl border-2 border-cyan-400 bg-gradient-to-br from-blue-950 via-slate-900 to-cyan-950 shadow-lg shadow-cyan-500/20">
           <div className="relative flex h-full w-full items-center justify-center">
             <div className="absolute h-40 w-40 rounded-full border-2 border-cyan-500/20" />
             <div className="absolute h-32 w-32 rounded-full border border-cyan-400/30" />
