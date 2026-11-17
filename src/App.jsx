@@ -66,6 +66,7 @@ function App() {
           onReturnHome={handleReturnHome}
           selectedDifficulty={selectedDifficulty}
           onSetHighScore={handleSetHighScore}
+          highScores={highScores}
         />
       )}
     </div>

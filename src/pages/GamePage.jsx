@@ -10,6 +10,7 @@ export default function GamePage({
   onReturnHome,
   selectedDifficulty,
   onSetHighScore,
+  highScores
 }) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -101,7 +102,7 @@ export default function GamePage({
       <header className="flex justify-around p-4 bg-sky-700 border-2 border-solid border-sky-500 rounded-lg">
         <p className="flex flex-col items-center">
           <span className="text-sm font-medium">High Score</span>
-          <span className="text-2xl font-bold">0</span>
+          <span className="text-2xl font-bold">{highScores[selectedDifficulty.id]}</span>
         </p>
         <p className="flex flex-col items-center">
           <span className="text-sm font-medium">Your Score</span>
