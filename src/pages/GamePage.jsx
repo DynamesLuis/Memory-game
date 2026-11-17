@@ -4,6 +4,7 @@ import Loading from "../components/game/Loading";
 import DigimonCard from "../components/game/DigimonCard";
 import { getCardsToShow } from "../utils/gameUtils";
 import GameResultModal from "../components/game/GameResultModal";
+import { useRef } from "react";
 
 export default function GamePage({
   onReturnHome,
@@ -15,7 +16,11 @@ export default function GamePage({
   const [characterPool, setCharacterPool] = useState(null);
   const [selectedCharacters, setSelectedCharacters] = useState([]);
   const [charactersShown, setCharactersShown] = useState([]);
+  const [pendingCharacters, setPendingCharacters] = useState([]);
   const [gameStatus, setGameStatus] = useState("playing");
+  const [isFlipped, setIsFlipped] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const cardsFlipped = useRef(0);
 
   useEffect(() => {
     async function fetchData() {
@@ -40,7 +45,7 @@ export default function GamePage({
   }, []);
 
   const handleClickedCard = (clickedCard) => {
-    if (gameStatus !== "playing") return;
+    if (gameStatus !== "playing" || isAnimating) return;
 
     if (selectedCharacters.includes(clickedCard)) {
       setGameStatus("lost");
@@ -53,7 +58,10 @@ export default function GamePage({
         setGameStatus("won");
         return;
       }
-      setCharactersShown(
+
+      setIsFlipped(true);
+      setIsAnimating(true);
+      setPendingCharacters(
         getCardsToShow(
           characterPool,
           updatedSelectedCharacters,
@@ -69,6 +77,23 @@ export default function GamePage({
     setCharactersShown(
       getCardsToShow(characterPool, [], selectedDifficulty.cardsShown),
     );
+  };
+
+  const handleOnTransitionEnd = (e) => {
+    if (e.propertyName === "transform" && e.target === e.currentTarget) {
+      cardsFlipped.current += 1;
+    }
+
+    if (cardsFlipped.current === charactersShown.length) {
+      if (isFlipped) {
+        setCharactersShown([...pendingCharacters]);
+        cardsFlipped.current = 0;
+        setIsFlipped(false);
+      } else {
+        cardsFlipped.current = 0;
+        setIsAnimating(false);
+      }
+    }
   };
 
   return (
@@ -92,16 +117,18 @@ export default function GamePage({
         </p>
       </header>
 
-      <div className="flex-1 flex items-center justify-center">
+      <div className={`flex-1 flex items-center justify-center ${isAnimating ? "pointer-events-none" : null}`}>
         {isLoading ? (
           <Loading />
         ) : (
-          charactersShown.map((digimon) => {
+          charactersShown.map((digimon, index) => {
             return (
               <DigimonCard
                 digimon={digimon}
                 onSelect={handleClickedCard}
-                key={digimon.id}
+                isFlipped={isFlipped}
+                key={index}
+                onFlipped={handleOnTransitionEnd}
               />
             );
           })
